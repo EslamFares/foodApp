@@ -5,6 +5,9 @@ import 'package:meal_app/models/meal.dart';
 
 class MealDetailsScreen extends StatefulWidget {
   static const String path = 'MealDetailsScreen';
+  final Function addFavourite;
+  final Function isMealFavourite;
+  const MealDetailsScreen(this.addFavourite, this.isMealFavourite);
 
   @override
   _MealDetailsScreenState createState() => _MealDetailsScreenState();
@@ -17,6 +20,7 @@ class _MealDetailsScreenState extends State<MealDetailsScreen> {
   //====================
   List<bool> inputs = List<bool>();
   @override
+  // ignore: must_call_super
   void initState() {
     setState(() {
       for (int i = 0; i < 20; i++) {
@@ -36,6 +40,16 @@ class _MealDetailsScreenState extends State<MealDetailsScreen> {
         title: Text(
           meal.title,
         ),
+        actions: [
+          IconButton(
+            icon: Icon(
+              Icons.delete,
+              color: Colors.grey,
+              size: 30,
+            ),
+            onPressed: () => delShowDialog(context, meal),
+          )
+        ],
       ),
       body: SingleChildScrollView(
         child: Container(
@@ -62,42 +76,49 @@ class _MealDetailsScreenState extends State<MealDetailsScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return AlertDialog(
-                  title: Text(
-                    'Delete ?',
-                    style: TextStyle(color: Colors.black),
-                  ),
-                  content: Text(
-                    'you will delete this meal...',
-                    style: TextStyle(color: Colors.black),
-                  ),
-                  actions: [
-                    FlatButton(
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                        Navigator.of(context).pop(meal.id);
-                      },
-                      child: Text('ok'),
-                    ),
-                    FlatButton(
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                      child: Text('cancel'),
-                    )
-                  ],
-                );
-              });
+          widget.addFavourite(meal.id);
         },
-        child: Icon(
-          Icons.delete,
-          size: 30,
-        ),
+        child: widget.isMealFavourite(meal.id)
+            ? Icon(
+                Icons.favorite,
+                size: 30,
+                color: K.thColor,
+              )
+            : Icon(Icons.favorite_border),
       ),
     );
+  }
+
+  Future delShowDialog(BuildContext context, Meal meal) {
+    return showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text(
+              'Delete ?',
+              style: TextStyle(color: Colors.black),
+            ),
+            content: Text(
+              'you will delete this meal...',
+              style: TextStyle(color: Colors.black),
+            ),
+            actions: [
+              FlatButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  Navigator.of(context).pop(meal.id);
+                },
+                child: Text('ok'),
+              ),
+              FlatButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text('cancel'),
+              )
+            ],
+          );
+        });
   }
 
   Widget stepsChild(index, Meal meal) {
@@ -110,6 +131,7 @@ class _MealDetailsScreenState extends State<MealDetailsScreen> {
           setState(() {
             inputs[index] = !inputs[index];
           });
+          // ignore: unnecessary_statements
           inputs[index] ? showSnackCompleted(index) : null;
         },
         trailing: inputs[index]
@@ -223,6 +245,7 @@ class _MealDetailsScreenState extends State<MealDetailsScreen> {
         text,
         style: Theme.of(context)
             .textTheme
+            // ignore: deprecated_member_use
             .title
             .copyWith(color: Colors.white, fontSize: 18),
       ),

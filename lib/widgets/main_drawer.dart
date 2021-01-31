@@ -29,7 +29,7 @@ class MainDrawer extends StatelessWidget {
                 icon: Icons.settings,
                 function: () {
                   Navigator.of(context).pop();
-                  Navigator.of(context).pushReplacementNamed(FilterScreen.path);
+                  Navigator.of(context).pushNamed(FilterScreen.path);
                 },
               )
             ],

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:meal_app/models/meal.dart';
 import 'package:meal_app/widgets/meal_item.dart';
-import '../dummy_data.dart';
 
 class CategoryMealScreen extends StatefulWidget {
   static const String path = 'CategoryMealScreen';
-
+  final List<Meal> availableMeals;
+  CategoryMealScreen(this.availableMeals);
   @override
   _CategoryMealScreenState createState() => _CategoryMealScreenState();
 }
@@ -20,7 +20,7 @@ class _CategoryMealScreenState extends State<CategoryMealScreen> {
     final String id = data['id'];
     title = data['title'];
     color = data['color'];
-    categoryMeals = DUMMY_MEALS.where((meal) {
+    categoryMeals = widget.availableMeals.where((meal) {
       return meal.categories.contains(id);
     }).toList();
     super.didChangeDependencies();

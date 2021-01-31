@@ -6,7 +6,7 @@ import 'package:meal_app/screens/meal_details_screen.dart';
 class MealIem extends StatelessWidget {
   final Meal dataMeal;
   final Function removeItem;
-  const MealIem({@required this.dataMeal, @required this.removeItem});
+  const MealIem({@required this.dataMeal, this.removeItem});
   void selectMeal(context) {
     Navigator.pushNamed(context, MealDetailsScreen.path, arguments: dataMeal)
         .then((result) {

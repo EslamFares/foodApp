@@ -1,19 +1,29 @@
 import 'package:flutter/material.dart';
-import 'package:meal_app/widgets/main_drawer.dart';
+import 'package:meal_app/models/meal.dart';
+import '../widgets/main_drawer.dart';
 import '../constant.dart';
 import 'categories_screen.dart';
 import 'favourite_screen.dart';
 
 class TabsScreen extends StatefulWidget {
   static const String path = 'TabsScreen';
+  final List<Meal> favouriteMeals;
+  const TabsScreen(this.favouriteMeals);
+
   @override
   _TabsScreenState createState() => _TabsScreenState();
 }
 
 class _TabsScreenState extends State<TabsScreen> {
   int index = 0;
-  List bodyScreen = [CategoriesScreen(), FavouriteScreen()];
+  List bodyScreen;
   List appBarTitle = ['Meal App', 'Favourite'];
+  @override
+  void initState() {
+    bodyScreen = [CategoriesScreen(), FavouriteScreen(widget.favouriteMeals)];
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,11 +34,10 @@ class _TabsScreenState extends State<TabsScreen> {
         title: Text(
           appBarTitle[index],
           style: TextStyle(
-              color: K.thColor,
-              fontSize: 24,
-              fontFamily: 'Raleway',
-              fontWeight: FontWeight.bold,
-
+            color: K.thColor,
+            fontSize: 24,
+            fontFamily: 'Raleway',
+            fontWeight: FontWeight.bold,
           ),
         ),
       ),
@@ -53,7 +62,9 @@ class _TabsScreenState extends State<TabsScreen> {
         });
       },
       items: [
+        // ignore: deprecated_member_use
         BottomNavigationBarItem(icon: Icon(Icons.home), title: Text('')),
+        // ignore: deprecated_member_use
         BottomNavigationBarItem(icon: Icon(Icons.favorite), title: Text('')),
         // BottomNavigationBarItem(icon: Icon(Icons.home),title: Text('')),
       ],
